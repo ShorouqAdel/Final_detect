@@ -4,11 +4,23 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 import io
+import os
+import gdown
 
 app = FastAPI()
 
+# Google Drive file ID (extracted from your link)
+file_id = "1rKh-IElSdHTqax7XdfSdZTn-r8T_qWPf"
+file_url = f"https://drive.google.com/uc?id={file_id}"
+model_path = "plant_disease_prediction_model.h5"
+
+# Check if the model file exists; if not, download it
+if not os.path.exists(model_path):
+    print(f"Downloading the model from Google Drive...")
+    gdown.download(file_url, model_path, quiet=False)
+
 try:
-    model = tf.keras.models.load_model("plant_disease_prediction_model.h5")
+    model = tf.keras.models.load_model(model_path)
     print("Model loaded successfully!")
 except Exception as e:
     print(f"Error loading model: {e}")
